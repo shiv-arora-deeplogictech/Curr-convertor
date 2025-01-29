@@ -1,9 +1,10 @@
-const BASE_URL = "ttps://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies";
+const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 
 const dropdown=document.querySelectorAll('.dropdown select');
 const btn = document.querySelector("form button");
-const fromCurr = document.querySelector(".from select");
-const fromCurr = document.querySelector(".to select");
+const fromCurr = document.querySelector(".select-container select");
+const toCurr = document.querySelector(".to select");
+const msg = document.querySelector(".msg");
 
 for(let select of dropdown){
     for(currCode in countryList){
@@ -37,9 +38,14 @@ for(let select of dropdown){
             amount.value=1;
         }
         
-        const URL =`${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
+        const URL =`${BASE_URL}/${fromCurr.value.toLowerCase()}.json`;
         let response = await fetch(URL);
-        console.log(response);
+        let data = await response.json();
+        let rate=  data[fromCurr.value.toLowerCase()][toCurr.value.toLowerCase()];
+        
+        let finalAmount = amtVal*rate;
+        msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
+        console.log(finalAmount);
     });
 }
 
